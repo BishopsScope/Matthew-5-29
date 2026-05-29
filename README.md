@@ -1,3 +1,21 @@
+# Matthew 5:29
+
+> *"If your right eye causes you to sin, tear it out and throw it away."*
+
+---
+
+## Motive
+
+<!-- Fill in your personal reason for creating this software here -->
+
+---
+
+## Demo
+
+<!-- YouTube demo link: [Watch the demo](https://www.youtube.com/watch?v=YOUR_LINK_HERE) -->
+
+---
+
 # Windows Restriction Manager
 
 A GUI-driven restriction framework for Windows 11 that lets an administrator deploy a comprehensive suite of internet-access and application-execution restrictions on a shared machine — with the click of a button, entirely for free.
@@ -63,22 +81,24 @@ Every restriction here uses tools already built into Windows 11, **including Win
 - Read the WDAC note in Step 3 carefully before clicking Apply.
 
 ### Step 1 — Run the Restriction Manager
-Right-click `restriction_manager.exe` → **Run as administrator** → click Yes on the UAC prompt.
+Run `restriction_manager.exe`. Windows will immediately present a UAC elevation prompt — click **Yes**. The executable is compiled with `--uac-admin`, so administrator rights are requested automatically; no right-click required.
 
 ### Step 2 — ACL File Restrictions
 Enter the restricted user's account name → click **Apply**.
+
+> **Restore from backup:** If the ACL restrictions were previously applied, the **Restore from file…** button in the ACL card lets you select an existing XML backup. Backups are stored at `C:\NTFS_ACL_Backups\<backup file>.xml` — navigate there if you need to locate one manually.
 
 ### Step 3 — WDAC Application Control
 
 > ⚠️ **Read this before clicking Apply.**
 >
-> WDAC blocks any executable not in `C:\Program Files` or `C:\Program Files (x86)`. This includes the Restriction Manager itself if it lives somewhere like `C:\Users\YourAdminName\Downloads`. **Before applying the policy, add `C:\Users\<your admin account name>\*` to the "Allow Extra Paths" field in the WDAC card** so the Restriction Manager remains runnable.
+> WDAC blocks any executable not in `C:\Program Files` or `C:\Program Files (x86)`. This includes the Restriction Manager itself if it lives somewhere like `C:\Users\YourAdminName\Downloads`. **Before applying the policy, the "Allow Extra Paths" field is pre-loaded with `C:\Users\Admin\*` — edit this to match your actual admin account name** (e.g. `C:\Users\<Your Admin Account Name>\*`) so the Restriction Manager remains runnable.
 >
-> If you forget and find yourself locked out of running the Restriction Manager (or any other exe), don't panic. Navigate to `C:\Windows\System32\CodeIntegrity\CiPolicies\Active`, delete or move the `.cip` file in that folder, and restart the computer. Everything will work normally again.
+> If you forget and find yourself locked out of running the Restriction Manager (or any other exe), **DO NOT PANIC**. Navigate to `C:\Windows\System32\CodeIntegrity\CiPolicies\Active`, delete or move the `.cip` file in that folder, and restart the computer. Everything will work normally again.
 >
 > It is strongly recommended to **test WDAC on your specific setup** before finalizing the restrictions — any program installed outside `C:\Program Files` (for example in `AppData`) will stop working. Reinstall those programs using a system installer and choose "Install for all users" to put them in `C:\Program Files`. The policy can be removed with one click in the Restriction Manager at any time.
 
-Add `C:\Users\<your admin account name>\*` to the "Allow Extra Paths" field, then click **Apply**. **Reboot when prompted.**
+Edit the pre-loaded `C:\Users\Admin\*` in the "Allow Extra Paths" field to match your admin account name, then click **Apply**. **Reboot when prompted.**
 
 ### Step 4 — Block Windows Store
 Click **Apply**.
@@ -92,31 +112,77 @@ Click **Auto-detect Chrome Extensions** and **Auto-detect Edge Extensions** to p
 ### Step 7 — Proxy Lock
 Enter the restricted user's account name → click **Apply**.
 
+> **Status note:** If the restricted user's account is currently signed in, the status will show **"Locked (\<username\>)"** confirming the lock is active. If the restricted user is fully signed out, Windows unloads their registry hive and the status will indicate the hive could not be loaded — this does not mean the lock is missing. To verify: log in to the restricted account, then switch back to the admin account without signing out. The GUI will update the status correctly once the hive is loaded and you type in the restricted username.
+
 ### Step 8 — BrowserGuard
 
-> **Note about the desktop watermark:** BrowserGuard enables Windows test-signing mode, which puts a small watermark in the lower-right corner of the desktop. This is harmless and disappears the moment you click **Remove** in the BrowserGuard card and reboot.
+> **Note about the desktop watermark:** BrowserGuard enables Windows test-signing mode, which puts a small watermark in the lower-right corner of the desktop. This is harmless and disappears the moment you click **Remove** in the BrowserGuard card and reboot. You can also remove the watermark manually by doing the following:
+> 1) Type `cmd` into the task bar
+> 2) Right click `Command Prompt` and select `Run as administrator`
+> 3) Type `bcdedit /set testsigning off` and press Enter.
+> 4) Reboot the computer
 
 Click **Apply**. **Reboot when prompted.**
 
 ### Step 9 — Firewall Suite *(optional)*
-Click **Apply**. Use the **Timesheet Manager** shortcut that appears on the desktop to set allowed internet access hours. See the [Q&A](#qa) section for when to use this component and when to skip it.
+Click **Apply**. Use the **Timesheet Manager** shortcut that appears on the desktop to set allowed internet access hours. See the [Q&A](#qa) section for when to use this component and when to skip it. To use the **Timesheet Manager** shortcut, decide on which hours you'll want to have internet access enabled and then do the following:
+1) Open the shortcut link provided on the desktop
+2) Type `a`
+3) Enter the specific time you want internet access from (e.g. 7:00PM-9:30PM on January 1st, 2026 would be `01/01/2026 7:00pm-9:30pm`) and then press Enter
+4) Do step 3 for as many times as you need intervals of internet access
+5) Press Enter again
+6) Press `q` again and then press Enter
+
+Now the timesheet will be updated and the restricted user will have internet during the given time interval(s).
+
+> **Note:** when the **Firewall Suite** is applied, by default you won't have any internet access on the machine, so you (and your accountability partner) will need to maintain the timesheet regularly.
 
 ### Step 10 — Adapter Guard
-Review the adapters shown in the text box, remove any virtual or unwanted adapters, then click **Apply**.
+Review the adapters shown in the text box and keep only the adapters the restricted user should legitimately use (e.g. the "Wi-Fi" adapter). Remove anything else you don't need access to — virtual adapters, VirtualBox/Hyper-V adapters, Ethernet if Wi-Fi is the intended connection, etc. Click **Apply**.
+
+> ⚠️ **If Adapter Guard is not applied, there is a hole in the restrictions.** A user could plug in a USB Wi-Fi dongle or Ethernet cable that has no DNS restrictions configured and connect to a wireless network, completely bypassing the DNS Suite in Step 11.
 
 ### Step 11 — DNS Suite *(most important)*
 
 1. In the DNS Suite card, move **all** network adapters from the **DNS-Incapable** box to the **DNS-Capable** box using the → button. Any adapter left in the DNS-Incapable box bypasses the restrictions entirely.
-2. Click **Run DNS Whitelist Logger** and browse all websites the restricted user should have access to. Close the window when done.
-3. Click **Run Merge Whitelists** and walk through the prompts to approve the captured domains.
+2. Click **Run DNS Whitelist Logger**, open up a **Google Chrome** or **Microsoft Edge** browser window and browse all websites the restricted user should have access to. Close the window when done.
+3. Click **Run Merge Whitelists** and for every domain the **DNS Whitelist Logger** caught that **wasn't** present in the whitelist before, it'll prompt you to type `y`, `n` or `w`(hitelist) and then press Enter to add it to the whitelist.
+
+> For example, in order for **youtube.com** to properly render, you need to allow sub-domains of
+> * `rr1---sn-a5mlrnlz.googlevideo.com`
+> * `rr2---sn-a5mekndd.googlevideo.com`
+> * `yt3.ggpht.com`
+>
+> and more in order for videos to render properly, but there's *two* problems with this:
+>
+> 1) Nobody wants to remember to manually to add `yt3.ggpht.com` to their whitelist for `youtube.com` to render (imagine having to remember dozens of irrelevant sub-domains in order to get a single website to be added to the whitelist)
+> 2) Sub-domains like `rr1---sn-a5mlrnlz.googlevideo.com` change all the time, so if you whitelisted it word-for-word, then tomorrow the domain may not render
+>
+> The solution?
+>
+> When you run **Merge Whitelists** and a domain like `rr1---sn-a5mlrnlz.googlevideo.com` appears (which solves **problem 1** from above), you have **three** options:
+>
+> 1) Type `y` -- adds `rr1---sn-a5mlrnlz.googlevideo.com` to the whitelist (but if ANY part of that domain changes, the DNS server won't render it anymore)
+> 2) Type `n` -- rejects `rr1---sn-a5mlrnlz.googlevideo.com` from being added to the whitelist
+> 3) Type `w` -- **Merge Whitelists** will ask you if you want the domain name `googlevideo.com` included in the whitelist followed by asking if you want `*.googlevideo.com` (the `*` is a wildcard, which solves **problem 2**). If you answer `n` to `*.googlevideo.com`, then **Merge Whitelists** will move one domain higher and ask you if you want `rr1---sn-a5mlrnlz.googlevideo.com` followed by asking if you want `*.rr1---sn-a5mlrnlz.googlevideo.com` and it keeps asking that paired domain combination until you say `y` on the wildcard prompt **or** it asks you for `*.<the full remaining domain>`.
+>
+> **Note: Usually when you choose to whitelist a domain (because you think it may change in the future), the vast majority of the time you should enter `y` and `y` after choosing `w`, so try to default to doing this, but you will need to experiment depending on which websites you're whitelisting.**
+
+
 4. Click **Apply** to deploy the DNS server.
+
+> **Backup and restore:** Click **Export DNS Files** to save a snapshot of `whitelisted_domains.json`, `blacklisted_domains.json`, and `domain_access_log.json` to a folder of your choice. To restore from a backup, click **Upload JSON File** and select the file — it must be named *exactly* `whitelisted_domains.json`, `blacklisted_domains.json`, or `domain_access_log.json` for the upload to be routed to the correct destination automatically.
+>
+> **Settings:** The DNS card exposes two configurable values — **Upstream DNS IP** (default `8.8.8.8`; change this if you prefer a different upstream resolver such as `1.1.1.1`) and **Threshold Days** (default `7`). Click **Save** after changing either value. Whitelisted domain names that appear in **red** in the whitelist panel are domains whose last-access timestamp (stored in `domain_access_log.json`) exceeds `Threshold Days` — these have not been visited recently and should be considered for deletion to keep the whitelist lean.
+>
+> **Note:** It may be worth running steps 2-3 above occasionally as domain names and sub-domain names undergo updates.
 
 ### Step 12 — Hand Over the Password
 Give the administrator account password to the accountability partner. Setup is complete.
 
 ---
 
-## Restrictions Reference
+## Restrictions Reference (Additional Details)
 
 ---
 
@@ -147,11 +213,11 @@ Give the administrator account password to the accountability partner. Setup is 
 > ⚠️ **Critical — add your admin account path before applying:**
 > Any exe not in `C:\Program Files` or `C:\Program Files (x86)` will be blocked — including the Restriction Manager itself if it's running from somewhere like `C:\Users\YourAdminName\`. Before clicking Apply, add `C:\Users\<your admin account name>\*` to the "Allow Extra Paths" field.
 >
-> **If you get locked out** (can't run the Restriction Manager or other exes after a reboot), navigate to `C:\Windows\System32\CodeIntegrity\CiPolicies\Active`, delete or move the `.cip` file there, and restart. All exes will run normally again immediately.
+> **If you get locked out** (can't run the Restriction Manager or other exes after a reboot), navigate to `C:\Windows\System32\CodeIntegrity\CiPolicies\Active`, delete or move the file named **`{AE466EE3-68C3-20E7-A255-F6B84E1F225A}.cip`** (there will be several `.cip` files in that folder — this is the one created by the Restriction Manager), and restart. All exes will run normally again immediately.
 
-**Does not restrict** the administrator account independently — WDAC is a machine-wide policy. Any exe in the allowed paths runs for everyone. Script enforcement can optionally be disabled (the "Disable Script Enforcement" checkbox) to leave PowerShell unrestricted for the administrator.
+**WDAC is a machine-wide policy**. Any exe in the allowed paths can run without restriction. Script enforcement can optionally be disabled (the "Disable Script Enforcement" checkbox) to leave PowerShell unrestricted for the administrator.
 
-**Test before finalizing.** Programs installed outside `C:\Program Files` — typically anything installed "for this user only" — will stop working. Reinstall them using a system-level installer and choose "Install for all users" to place them in `C:\Program Files`.
+**Test before finalizing.** Programs installed outside `C:\Program Files` or `C:\Program Files (x86)` — typically any program installed "for this user only" — will stop working. Reinstall them using a system-level installer and choose "Install for all users" to place them in `C:\Program Files` or `C:\Program Files (x86)`.
 
 ---
 
@@ -203,7 +269,7 @@ The proxy is forced **off** before the lock is applied — the user will never b
 
 **What it does:** Installs `BrowserGuard.sys` as a kernel-mode driver that intercepts process creation events. When Chrome (`chrome.exe`) or Edge (`msedge.exe`) is launched with any command-line arguments, the driver returns **Access Denied** — the browser simply won't open if arguments are passed to it. Chrome and Edge launched normally (via shortcut, Start menu, or by clicking a file) work without issue.
 
-**Why it's needed:** Both browsers accept command-line arguments that can override security policies — for example, `--dns-servers=8.8.8.8` to bypass the DNS server, or `--proxy-server` to set a proxy. A kernel driver is the only reliable way to block this because user-mode approaches (NTFS permissions, Registry tricks) can be worked around by copying the exe elsewhere.
+**Why it's needed:** Both browsers accept command-line arguments that can override security policies — for example, `--dns-servers=8.8.8.8` to bypass the DNS server, or `--proxy-server` to set a proxy. A kernel driver is the only reliable way to block this because user-mode approaches (NTFS permissions, Registry tricks) aren't comprehensive.
 
 > **About the desktop watermark:** BrowserGuard requires Windows test-signing mode, which puts a small watermark in the lower-right corner of the desktop (e.g. "Test Mode — Windows 11"). This is harmless and not permanent — clicking **Remove** in the BrowserGuard card and rebooting removes it completely.
 
@@ -256,13 +322,9 @@ The allowlist is managed entirely through the Restriction Manager GUI — no fil
 
 If a domain is on neither list, the server returns NXDOMAIN — the browser cannot connect to the site at all. **Everything is blocked by default unless explicitly approved.**
 
-**Why a whitelist instead of a blacklist?**
+**Why a whitelist instead of a blacklist?** See the [Q&A](#qa) section for the full explanation. In short: a blacklist can never be complete; a whitelist blocks everything by default and only opens what you've explicitly approved.
 
-Every major DNS filtering service — CleanBrowsing, NextDNS, Cloudflare Family — works by maintaining a blacklist of known bad domains. The fundamental problem with this approach is that **it cannot be complete**. The internet changes constantly, new domains appear daily, and a motivated person will find a domain that the filter missed. A blacklist that blocks 99.9999% of adult websites still leaves a gap, and that gap is all that's needed. You cannot prove a blacklist blocks *everything* — only that it blocks everything you thought to add.
-
-A whitelist inverts this: it blocks *everything except* what you've explicitly approved. You don't need to catalogue every bad website on the internet. You just need to approve the good ones. If a domain isn't on the whitelist, it doesn't matter what it contains — the DNS server refuses to resolve it.
-
-**The whitelist + blacklist combination** is what makes this practical day-to-day. The whitelist provides the broad "only approved sites" policy. The blacklist provides fine-grained overrides — for example, `google.com` can be whitelisted for Search while `accounts.google.com` is blacklisted to prevent account switching.
+**The whitelist + blacklist combination** is what makes this practical day-to-day — the whitelist provides the broad "only approved sites" policy, while the blacklist provides fine-grained overrides for blocking specific subdomains of otherwise-allowed sites (e.g. blocking `drive.google.com` while keeping `accounts.google.com` available). It's worth noting that the blacklist is **NOT** mandatory for the **DNS Suite** to function properly, but the whitelist **is** mandatory to use the internet.
 
 **Three executables are deployed:**
 
@@ -274,9 +336,9 @@ A whitelist inverts this: it blocks *everything except* what you've explicitly a
 
 **Stale domain tracking:** The Restriction Manager displays the whitelist with any domain not accessed within a configurable number of days highlighted in red with a day-count. This helps keep the whitelist lean over time.
 
-> **All network adapters must be DNS-Capable.** Move every adapter from the DNS-Incapable box to the DNS-Capable box in the DNS Suite card. Any adapter left in DNS-Incapable bypasses the DNS server and the restrictions entirely. The Restriction Manager automatically disables IPv6 on each adapter when it is moved to DNS-Capable — this prevents IPv6-based DNS bypasses. (When you uncheck IPv6 this way, Windows will not re-enable it automatically.)
+> **All network adapters must be DNS-Capable.** Move every adapter from the DNS-Incapable box to the DNS-Capable box. Any adapter left in DNS-Incapable bypasses the DNS server entirely. IPv6 is automatically disabled on each adapter when moved to DNS-Capable — this prevents a glitch where Windows sometimes randomly resets IPv6-based changes to adapters.
 
-> **Run the DNS Logger first, then Merge Whitelists, then start the server.** The DNS server blocks everything by default. If you start it before populating the whitelist, no website will resolve at all until you populate and apply the whitelist.
+> **Run the DNS Logger first, then Merge Whitelists, then start using the server.** The DNS server blocks everything by default. If you start it before populating the whitelist, **no website will resolve at all until you populate and apply the whitelist.**
 
 ---
 
@@ -308,7 +370,7 @@ No single restriction here is unbreakable in isolation. They are designed to be 
 
 Use it if you want to completely cut off internet access outside of specific hours — for example, a shared family computer where internet is allowed from 4pm–9pm on weekdays.
 
-**Critical warning:** If you deploy the Firewall Suite without the DNS Suite, during every internet window the user has fully unrestricted internet access — every other restriction in this project can be worked around if you have unrestricted internet and enough time. **There is no possible way to have an internet access window where the restrictions cannot be bypassed unless the DNS Suite is also deployed.** The Firewall Suite is designed for situations where the user is trusted during the allowed window (for example, because an accountability partner is physically present, or the restriction is self-imposed).
+**Critical warning:** If you deploy the Firewall Suite without the DNS Suite, during every internet window the user has fully unrestricted internet access — every other restriction in this project can be worked around if you have unrestricted internet and enough time. **There is no possible way to have an internet access window where the restrictions cannot be bypassed unless the DNS Suite is also deployed.** The Firewall Suite is designed for situations where the user is trusted during the allowed window (ex: when an accountability partner is physically present).
 
 If content filtering is your goal, the DNS Suite is non-negotiable. The Firewall Suite is an add-on for time control, not a content filter.
 
@@ -320,19 +382,14 @@ A whitelist-based DNS server doesn't have this problem because it starts from "e
 
 ### What about Firefox, Brave, or other browsers?
 
-**Remove them.** The DoH restriction, BrowserGuard, and Extension Lockdown only cover Chrome and Edge. Any other browser is a complete bypass vector for the DNS and proxy restrictions. If you can't uninstall a browser, use the WDAC policy to block its executable by adding its file hash or publisher to the policy.
+**Remove them.** The DoH restriction, BrowserGuard, and Extension Lockdown only cover Chrome and Edge. Any other browser is a complete bypass vector for the DNS and proxy restrictions. Perhaps future updates will include support for additional browsers.
 
----
-
-## Extra Hardening Notes
-
-- **iCloud:** If the machine has an iPhone connected, iCloud can transfer files outside of normal access controls. Block iCloud domains via the DNS Suite blacklist to prevent this.
-
-- **Admin password hygiene:** The administrator account password must not be known to the restricted person. All restrictions can be undone by anyone who can log in as administrator.
 
 ---
 
 ## Architecture & Build Guide
+
+This assumes you want to compile the `restriction_manager.exe` file for yourself. If you just want to download and run the restrictions, then you can launch the pre-compiled `restriction_manager.exe` file I compiled by clicking the `Code` button (if you're viewing this from GitHub) and then clicking `Download ZIP` and locating and running the executable from there.
 
 ### How it works
 
@@ -348,54 +405,19 @@ restriction_manager.exe
 
 ### Build prerequisites *(dev machine only)*
 
-Python 3.10+, PyInstaller, and `dnslib`:
+Python 3.10+ (I used Python 3.11.3), PyInstaller, and `dnslib`:
 ```
 pip install --upgrade pyinstaller dnslib
 ```
-
-### Step 1 — Compile payload scripts
-
-**Groups** are used when multiple `--onedir` compilations need to share the same output directory (their `_internal/` folders are merged). The DNS suite tools must share a directory so they can read and write the same JSON data files at runtime. **Standalone scripts** are compiled independently.
-
-```python
-GROUPS: dict[str, list[dict]] = {
-    "dns_suite": [
-        {"file": "ScriptsToCompile/dns_whitelist_blacklist_server.py", "command": "pyinstaller --clean --onedir ScriptsToCompile/dns_whitelist_blacklist_server.py"},
-        {"file": "ScriptsToCompile/dns_whitelist_logger.py",           "command": "pyinstaller --clean --onedir ScriptsToCompile/dns_whitelist_logger.py"},
-        {"file": "ScriptsToCompile/merge_whitelists.py",               "command": "pyinstaller --onedir ScriptsToCompile/merge_whitelists.py"},
-    ],
-    "firewall_suite": [
-        {"file": "ScriptsToCompile/firewall_scheduler.py",             "command": "pyinstaller --onedir --noconsole ScriptsToCompile/firewall_scheduler.py"},
-        {"file": "ScriptsToCompile/timesheet_manager_firewall.py",     "command": "pyinstaller --onedir ScriptsToCompile/timesheet_manager_firewall.py"},
-    ],
-}
-
-STANDALONE_SCRIPTS: list[dict] = [
-    {"file": "ScriptsToCompile/adapter_guard_oneshot.py", "command": "pyinstaller --onedir --noconsole ScriptsToCompile/adapter_guard_oneshot.py"},
-    # {"file": "ScriptsToCompile/restriction_manager.py", "command": "pyinstaller --onefile --noconsole --uac-admin restriction_manager.py --add-data \"FIREWALL_SUITE.dat;.\" --add-data \"BROWSERGUARD_SYS.dat;.\" --add-data \"ADAPTER_GUARD.dat;.\" --add-data \"DNS_SUITE.dat;.\""},
-]
+or
+```
+pip install -r requirements.txt
 ```
 
-### Step 2 — Encode payloads
+### Compile the restriction_manager.py script into an exe file
 
-Running the encode step produces one `.dat` file per group and standalone:
+Run
 ```
-FIREWALL_SUITE.dat
-DNS_SUITE.dat
-ADAPTER_GUARD.dat
-BROWSERGUARD_SYS.dat    ← encoded directly from the BrowserGuard.sys binary
+python main.py
 ```
-
-### Step 3 — Compile the Restriction Manager
-
-Place all `.dat` files next to `restriction_manager.py`, then:
-
-```
-pyinstaller --onefile --noconsole --uac-admin restriction_manager.py ^
-  --add-data "FIREWALL_SUITE.dat;."    ^
-  --add-data "BROWSERGUARD_SYS.dat;." ^
-  --add-data "ADAPTER_GUARD.dat;."    ^
-  --add-data "DNS_SUITE.dat;."
-```
-
-`--uac-admin` makes Windows automatically request administrator elevation on launch. `--onefile` bundles everything — including all `.dat` payloads — into a single distributable exe.
+and after a few minutes, you'll see `restriction_manager.exe` fully compiled

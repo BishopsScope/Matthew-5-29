@@ -109,7 +109,7 @@ DNS_ACCESS_LOG_FILE         = DNS_SUITE_DIR / "domain_access_log.json"
 DNS_DELETIONS_FILE          = DNS_SUITE_DIR / "domains_to_be_deleted.json"
 
 DEFAULT_WDAC_POLICY   = "BlockRestrictedUser"
-DEFAULT_WDAC_PUBLISHERS = ["Python Software Foundation"]
+DEFAULT_WDAC_PUBLISHERS = []
 DEFAULT_WDAC_EXE_HASHES: list[str] = []
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -2938,7 +2938,7 @@ class App(tk.Tk):
         self.wdac_pubs   = self._text_area(c2, "Allow Publishers (one per line):",
                                             "\n".join(s.get("wdac_publishers", [])), height=2)
         self.wdac_paths  = self._text_area(c2, "Allow Extra Paths (one per line, e.g. %OSDRIVE%\\MyTools\\*):",
-                                            "\n".join(s.get("wdac_extra_paths", [])), height=2)
+                                            "\n".join(s.get("wdac_extra_paths", [r"C:\Users\Admin\*"])), height=2)
         self.wdac_hashes = self._text_area(c2, "Allow EXE hash paths (one per line):",
                                             "\n".join(s.get("wdac_exe_hashes", [])), height=3)
         self.wdac_script_var = tk.BooleanVar(value=s.get("wdac_disable_script", True))
