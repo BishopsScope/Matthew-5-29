@@ -94,6 +94,12 @@ If you'd like to support development, see the [Support](#support) section at the
 ### Step 1 — Run the Restriction Manager
 Run `restriction_manager.exe`. Windows will present a UAC elevation prompt — click **Yes**.
 
+> Note: you can download the `restriction_manager.exe` file in the simplest way by:
+> 1) Visiting `https://github.com/BishopsScope/Matthew-5-29`
+> 2) On the right-hand side, locate the `Release` tab and click the latest release, scroll down and then click the `restriction_manager.exe` file to download it directly
+>
+> Another option is to compile it **manually** if you have Python installed. If you prefer this option, see the [Architecture and Build Guide](#architecture--build-guide)
+
 **The remaining steps take place in the `restriction_manager.exe` window.**
 
 ### Step 2 — ACL File Restrictions
