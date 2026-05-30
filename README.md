@@ -1,48 +1,61 @@
-# Matthew 5:29
+# Project Matthew 5:29
 
-> *"If your right eye causes you to sin, tear it out and throw it away."*
+> *"If your right eye causes you to sin, tear it out and throw it away."* (ESV)
+>
+> \- Jesus (The Sermon on the Mount)
 
 ---
 
 ## Motive
 
-<!-- Fill in your personal reason for creating this software here -->
+If you are reading this, welcome.
+
+This project has been a long time in the making. After years of searching for a comprehensive solution to block **all** avenues of access to pornographic content on the Windows operating system—and coming up empty-handed—I was driven by Jesus' words in **Matthew 5:29** to build my own accountability software.
+
+Over time I've identified all of the major loopholes that one could use to access pornography on a Windows machine and patched them. One-by-one, I incrementally built dozens of scripts to close all forms of access. Eventually, I merged all of these scripts into a software you can now download and run called `restriction_manager.exe` as a centralized coordinator to harmonize all restrictions together in one place.
+
+My goal has always been to create a software that makes Windows fully porn-proof and reaches as many people as possible. Now, in the click of a few buttons, **ANYONE** who wants to *"tear out"* the eye that causes them to sin can do so. No advanced programming knowledge needed. No subscription costs. No hidden fees. Just a tool for anyone with a Windows computer who shares a hatred for sin. Download the software, run it for **FREE**, and the problem of accessing pornographic content on your device is over.
+
+Over the years, I faced countless objections:
+
+> *"There's always going to be a way around whatever restrictions you set."*
+> *"If you're determined enough, you'll be able to access it no matter what."*
+> *"What Jesus was really saying is that you just have to make it hard enough to do."*
+
+Where did Jesus say to make it merely *hard* to access your sin? Can you access an eye that you've **torn out** and **thrown away**? I challenge whoever is reading this, humbly and with grace: **you will not find that interpretation in Matthew 5:29 if you look at the text honestly.**
+
+If this software blesses even **one** person, I will count it a success. If you have a programming background and would like to contribute, I encourage you to do so. If you know anyone this could help, please share it with them.
 
 ---
 
 ## Demo
 
-<!-- YouTube demo link: [Watch the demo](https://www.youtube.com/watch?v=YOUR_LINK_HERE) -->
+YouTube demo link: Coming Soon...
 
----
+## Overview: Windows Restriction Manager
 
-# Windows Restriction Manager
+A GUI-driven restriction framework for Windows 11 that lets an administrator deploy a comprehensive suite of internet-access and application-execution restrictions on a shared machine—with the click of a button, entirely for free.
 
-A GUI-driven restriction framework for Windows 11 that lets an administrator deploy a comprehensive suite of internet-access and application-execution restrictions on a shared machine — with the click of a button, entirely for free.
+**What this is:** This software is designed to make it **impossible**—not just difficult—for someone using a restricted (non-admin) account on a Windows 11 computer to access pornographic content. Existing solutions are often expensive, ineffective, or both. This tool is free, works on **Windows 11 Home**, and can be set up by anyone following the steps below.
 
----
+### ⚠️ Completely Free — No Paid Software Required
 
-> **What this is:** This software is designed to make it **impossible** — not just difficult — for someone using a restricted account on a Windows 11 computer to access pornography or other blocked content. It was built because existing solutions are either expensive, ineffective, or require advanced technical knowledge to configure. This one is free, works on **Windows 11 Home**, and is designed so that a non-technical person can set it up by following the steps in this document.
-
----
-
-## ⚠️ This Is Completely Free — No Paid Software Required
-
-Every restriction here uses tools already built into Windows 11, **including Windows 11 Home**. This is worth saying explicitly, because experienced Windows users may immediately think of:
-
-- **AppLocker** — requires Windows 11 Pro/Enterprise
-- **Local Security Policy** (`secpol.msc`) — requires Windows 11 Pro/Enterprise
-- **Group Policy Editor** (`gpedit.msc`) — requires Windows 11 Pro/Enterprise
+Every restriction here uses tools already built into Windows 11. This is worth stating explicitly, because experienced Windows users may immediately think of features like **AppLocker**, **Local Security Policy** (`secpol.msc`), or **Group Policy Editor** (`gpedit.msc`)—all of which require Windows 11 Pro or Enterprise. 
 
 **None of those are used here.** This project works on a stock Windows 11 Home machine with no purchases, no subscriptions, and no third-party services.
+
+If you'd like to support development, see the [Support](#support) section at the bottom of this page.
 
 ---
 
 ## Table of Contents
 
-1. [Requirements](#requirements)
-2. [Deployment Quick-Start](#deployment-quick-start)
-3. [Restrictions Reference](#restrictions-reference)
+1. [Motive](#motive)
+2. [Demo](#demo)
+3. [Overview: Windows Restriction Manager](#overview-windows-restriction-manager)
+4. [Requirements](#requirements)
+5. [Deployment Quick-Start](#deployment-quick-start)
+6. [Restrictions Reference](#restrictions-reference)
    - [1. ACL File Restrictions](#1-acl-file-restrictions)
    - [2. WDAC Application Control](#2-wdac-application-control)
    - [3. Block Windows Store](#3-block-windows-store)
@@ -53,371 +66,243 @@ Every restriction here uses tools already built into Windows 11, **including Win
    - [8. Firewall Suite](#8-firewall-suite)
    - [9. Adapter Guard](#9-adapter-guard)
    - [10. DNS Suite](#10-dns-suite)
-4. [How the Restrictions Reinforce Each Other](#how-the-restrictions-reinforce-each-other)
-5. [Q&A](#qa)
-6. [Extra Hardening Notes](#extra-hardening-notes)
-7. [Architecture & Build Guide](#architecture--build-guide)
+7. [How the Restrictions Reinforce Each Other](#how-the-restrictions-reinforce-each-other)
+8. [Q&A](#qa)
+9. [Architecture & Build Guide](#architecture--build-guide)
+10. [License](#license)
+11. [Support](#support)
 
 ---
 
 ## Requirements
 
-1. **Windows 11** (Home edition is fine).
+1. **Windows 11** (Home edition is supported).
 2. **Two user accounts on the machine:**
-   - An **administrator account** — runs the Restriction Manager and controls all settings.
-   - A **non-administrator (standard) account** — the account the restricted person uses day-to-day.
-   - If you only have one admin account, create a standard account before proceeding. The restrictions target the standard account specifically.
-3. **Only Chrome and/or Edge installed as browsers.** Other browsers (Firefox, Brave, Opera, etc.) bypass the DNS and DoH restrictions and must be removed.
-4. **After setup, the administrator password must be given to an accountability partner** — not kept by the person subject to the restrictions. Every restriction in this project can be undone by someone who can log in as an administrator.
+   - An **Administrator account** (runs the Restriction Manager and controls all settings).
+   - A **Standard (non-admin) account** (used day-to-day by the restricted person).
+   - *Note: If you only have one account, create a standard account before proceeding. The restrictions target the standard account specifically.*
+3. **Only Chrome and/or Edge installed.** Other browsers (Firefox, Brave, Opera, etc.) bypass the DNS/DoH restrictions and must be uninstalled.
+4. **An Accountability Partner.** After setup, the administrator password must be given to a trusted partner. Every restriction in this project can be undone by an administrator.
 
 ---
 
 ## Deployment Quick-Start
 
-> Follow these steps in order. Detailed explanations for each restriction are in the [Restrictions Reference](#restrictions-reference) section below.
-
-**Before you start:**
-- Install any Chrome/Edge extensions the restricted user will need *before* Step 5 (Extension Lockdown). Once that's applied, no new extensions can be added.
-- Read the WDAC note in Step 3 carefully before clicking Apply.
+> **Before you start:**
+> Install any Chrome/Edge extensions the restricted user will need *before* completing Step 6. Once applied, the restrictions must be undone for new extensions can be added.
 
 ### Step 1 — Run the Restriction Manager
-Run `restriction_manager.exe`. Windows will immediately present a UAC elevation prompt — click **Yes**. The executable is compiled with `--uac-admin`, so administrator rights are requested automatically; no right-click required.
+Run `restriction_manager.exe`. Windows will present a UAC elevation prompt — click **Yes**.
+
+**The remaining steps take place in the `restriction_manager.exe` window.**
 
 ### Step 2 — ACL File Restrictions
-Enter the restricted user's account name → click **Apply**.
-
-> **Restore from backup:** If the ACL restrictions were previously applied, the **Restore from file…** button in the ACL card lets you select an existing XML backup. Backups are stored at `C:\NTFS_ACL_Backups\<backup file>.xml` — navigate there if you need to locate one manually.
+Enter the restricted user's account name, then click **Apply**.
+*(To restore previous settings later, use the **Restore from file…** button to locate your backup at `C:\NTFS_ACL_Backups\`)*.
 
 ### Step 3 — WDAC Application Control
+> ⚠️ **CRITICAL WARNING:** WDAC blocks any executable not in `C:\Program Files` or `C:\Program Files (x86)`. This includes the Restriction Manager itself if you are running it from your Downloads folder. 
+> 
+> **Action Required:** The "Allow Extra Paths" field is pre-loaded with `C:\Users\Admin\*`. **You must edit this to match your actual admin account name** (e.g., `C:\Users\JohnDoe\*`) so the Manager remains runnable.
+>
+> *If you accidentally lock yourself out, navigate to `C:\Windows\System32\CodeIntegrity\CiPolicies\Active`, delete the `{AE466EE3-68C3-20E7-A255-F6B84E1F225A}.cip` file generated by the Manager, and reboot.*
 
-> ⚠️ **Read this before clicking Apply.**
->
-> WDAC blocks any executable not in `C:\Program Files` or `C:\Program Files (x86)`. This includes the Restriction Manager itself if it lives somewhere like `C:\Users\YourAdminName\Downloads`. **Before applying the policy, the "Allow Extra Paths" field is pre-loaded with `C:\Users\Admin\*` — edit this to match your actual admin account name** (e.g. `C:\Users\<Your Admin Account Name>\*`) so the Restriction Manager remains runnable.
->
-> If you forget and find yourself locked out of running the Restriction Manager (or any other exe), **DO NOT PANIC**. Navigate to `C:\Windows\System32\CodeIntegrity\CiPolicies\Active`, delete or move the `.cip` file in that folder, and restart the computer. Everything will work normally again.
->
-> It is strongly recommended to **test WDAC on your specific setup** before finalizing the restrictions — any program installed outside `C:\Program Files` (for example in `AppData`) will stop working. Reinstall those programs using a system installer and choose "Install for all users" to put them in `C:\Program Files`. The policy can be removed with one click in the Restriction Manager at any time.
-
-Edit the pre-loaded `C:\Users\Admin\*` in the "Allow Extra Paths" field to match your admin account name, then click **Apply**. **Reboot when prompted.**
+Edit the path to match your admin name, click **Apply**, and **Reboot when prompted.**
 
 ### Step 4 — Block Windows Store
 Click **Apply**.
 
 ### Step 5 — Disable DoH
-Click **Apply** in both the **Chrome — Disable DoH** and **Edge — Disable DoH** cards. This is required for the DNS Suite to work.
+Click **Apply** in *both* the **Chrome — Disable DoH** and **Edge — Disable DoH** cards. 
 
 ### Step 6 — Extension Lockdown
-Click **Auto-detect Chrome Extensions** and **Auto-detect Edge Extensions** to populate the allowlist from what's already installed, then click **Apply**.
+Click **Auto-detect Chrome Extensions** and **Auto-detect Edge Extensions** to populate the allowlist with your currently installed extensions. Then, click **Apply**.
 
 ### Step 7 — Proxy Lock
-Enter the restricted user's account name → click **Apply**.
-
-> **Status note:** If the restricted user's account is currently signed in, the status will show **"Locked (\<username\>)"** confirming the lock is active. If the restricted user is fully signed out, Windows unloads their registry hive and the status will indicate the hive could not be loaded — this does not mean the lock is missing. To verify: log in to the restricted account, then switch back to the admin account without signing out. The GUI will update the status correctly once the hive is loaded and you type in the restricted username.
+Enter the restricted user's account name, then click **Apply**. 
+*(Note: If the restricted user is currently signed out, the tool may indicate the registry hive could not be loaded. Log into the restricted account, switch back to the admin account without signing out, and try again).*
 
 ### Step 8 — BrowserGuard
-
-> **Note about the desktop watermark:** BrowserGuard enables Windows test-signing mode, which puts a small watermark in the lower-right corner of the desktop. This is harmless and disappears the moment you click **Remove** in the BrowserGuard card and reboot. You can also remove the watermark manually by doing the following:
-> 1) Type `cmd` into the task bar
-> 2) Right click `Command Prompt` and select `Run as administrator`
-> 3) Type `bcdedit /set testsigning off` and press Enter.
-> 4) Reboot the computer
-
 Click **Apply**. **Reboot when prompted.**
+*(Note: This enables Windows test-signing mode, which places a harmless "Test Mode" watermark in the lower-right corner of your desktop. Removing BrowserGuard removes this watermark).*
 
-### Step 9 — Firewall Suite *(optional)*
-Click **Apply**. Use the **Timesheet Manager** shortcut that appears on the desktop to set allowed internet access hours. See the [Q&A](#qa) section for when to use this component and when to skip it. To use the **Timesheet Manager** shortcut, decide on which hours you'll want to have internet access enabled and then do the following:
-1) Open the shortcut link provided on the desktop
-2) Type `a`
-3) Enter the specific time you want internet access from (e.g. 7:00PM-9:30PM on January 1st, 2026 would be `01/01/2026 7:00pm-9:30pm`) and then press Enter
-4) Do step 3 for as many times as you need intervals of internet access
-5) Press Enter again
-6) Press `q` again and then press Enter
-
-Now the timesheet will be updated and the restricted user will have internet during the given time interval(s).
-
-> **Note:** when the **Firewall Suite** is applied, by default you won't have any internet access on the machine, so you (and your accountability partner) will need to maintain the timesheet regularly.
+### Step 9 — Firewall Suite *(Optional)*
+Click **Apply**. A shortcut called **Timesheet Manager** will appear on the desktop. Use this to set specific hours when internet access is allowed. By default, internet access is completely blocked when enabled.
+**To configure the timesheet:**
+1. Open the **Timesheet Manager** shortcut.
+2. Type `a` and press Enter.
+3. Enter your desired time interval (e.g., `01/01/2026 7:00pm-9:30pm`) and press Enter.
+4. Repeat for as many intervals as needed.
+5. Press Enter on a blank line to finish.
+6. Type `q` and press Enter to quit. 
 
 ### Step 10 — Adapter Guard
-Review the adapters shown in the text box and keep only the adapters the restricted user should legitimately use (e.g. the "Wi-Fi" adapter). Remove anything else you don't need access to — virtual adapters, VirtualBox/Hyper-V adapters, Ethernet if Wi-Fi is the intended connection, etc. Click **Apply**.
+Review the network adapters shown. Keep only the adapters the restricted user legitimately needs (e.g., "Wi-Fi"). Remove adapters that aren't needed by the restricted user from the list, then click **Apply**.
 
-> ⚠️ **If Adapter Guard is not applied, there is a hole in the restrictions.** A user could plug in a USB Wi-Fi dongle or Ethernet cable that has no DNS restrictions configured and connect to a wireless network, completely bypassing the DNS Suite in Step 11.
+### Step 11 — DNS Suite *(Most Important)*
 
-### Step 11 — DNS Suite *(most important)*
+**What is DNS?**
+The Domain Name System (DNS) maps website names (e.g., `youtube.com`) to IP addresses (e.g., `104.237.180.122`). This DNS Suite intercepts those lookups and only allows access to websites on your **Whitelist**. Everything else is blocked by default. 
 
-1. In the DNS Suite card, move **all** network adapters from the **DNS-Incapable** box to the **DNS-Capable** box using the → button. Any adapter left in the DNS-Incapable box bypasses the restrictions entirely.
-2. Click **Run DNS Whitelist Logger**, open up a **Google Chrome** or **Microsoft Edge** browser window and browse all websites the restricted user should have access to. Close the window when done.
-3. Click **Run Merge Whitelists** and for every domain the **DNS Whitelist Logger** caught that **wasn't** present in the whitelist before, it'll prompt you to type `y`, `n` or `w`(hitelist) and then press Enter to add it to the whitelist.
+**Configuration Steps:**
+1. Move **all** network adapters from the **DNS-Incapable** box to the **DNS-Capable** box using the `→` button. 
+2. Click **Run DNS Whitelist Logger**. Open Chrome/Edge and browse all websites the restricted user needs access to. Close the logger window when done.
+3. Click **Run Merge Whitelists**. A terminal will appear asking which domains you'd like to send to the whitelist that you just logged. 
 
-> For example, in order for **youtube.com** to properly render, you need to allow sub-domains of
-> * `rr1---sn-a5mlrnlz.googlevideo.com`
-> * `rr2---sn-a5mekndd.googlevideo.com`
-> * `yt3.ggpht.com`
->
-> and more in order for videos to render properly, but there's *two* problems with this:
->
-> 1) Nobody wants to remember to manually to add `yt3.ggpht.com` to their whitelist for `youtube.com` to render (imagine having to remember dozens of irrelevant sub-domains in order to get a single website to be added to the whitelist)
-> 2) Sub-domains like `rr1---sn-a5mlrnlz.googlevideo.com` change all the time, so if you whitelisted it word-for-word, then tomorrow the domain may not render
->
-> The solution?
->
-> When you run **Merge Whitelists** and a domain like `rr1---sn-a5mlrnlz.googlevideo.com` appears (which solves **problem 1** from above), you have **three** options:
->
-> 1) Type `y` -- adds `rr1---sn-a5mlrnlz.googlevideo.com` to the whitelist (but if ANY part of that domain changes, the DNS server won't render it anymore)
-> 2) Type `n` -- rejects `rr1---sn-a5mlrnlz.googlevideo.com` from being added to the whitelist
-> 3) Type `w` -- **Merge Whitelists** will ask you if you want the domain name `googlevideo.com` included in the whitelist followed by asking if you want `*.googlevideo.com` (the `*` is a wildcard, which solves **problem 2**). If you answer `n` to `*.googlevideo.com`, then **Merge Whitelists** will move one domain higher and ask you if you want `rr1---sn-a5mlrnlz.googlevideo.com` followed by asking if you want `*.rr1---sn-a5mlrnlz.googlevideo.com` and it keeps asking that paired domain combination until you say `y` on the wildcard prompt **or** it asks you for `*.<the full remaining domain>`.
->
-> **Note: Usually when you choose to whitelist a domain (because you think it may change in the future), the vast majority of the time you should enter `y` and `y` after choosing `w`, so try to default to doing this, but you will need to experiment depending on which websites you're whitelisting.**
+> **How to use "Merge Whitelists":**
+> Modern websites rely on dozens of randomized sub-domains (e.g., `rr1---sn-a5mlrnlz.googlevideo.com` for YouTube). Adding these to your whitelist manually is impossible because they change constantly. 
+> 
+> When prompted with a logged domain, you have three options:
+> * **`y` (Yes):** Whitelists the exact, full sub-domain you're presented with. (Not recommended for randomized URLs, as it will break when the URL changes).
+> * **`n` (No):** Rejects the domain and moves on.
+> * **`w` (Wildcard mode):** Helps you allow a broader pattern so the site won't break when sub-domains change.
+> 
+> **How the Wildcard (`w`) option works:**
+> If the logger caught a long domain like `a.b.c.d.com` and you press `w`, the tool steps backward from the shortest part of the domain to the longest:
+> 1. First, it asks for the base domain: `Add base 'd.com'?` (Saying `y` allows *exactly* `d.com`).
+> 2. Next, it asks for the wildcard: `Add wildcard '*.d.com'?` (Saying `y` allows `anything.d.com` — like `mail.d.com` or `a.b.c.d.com`).
+>    * **Crucial Note:** `*.d.com` is **NOT** the same as `d.com`. A wildcard only covers sub-domains, it doesn't cover the base domain itself. If a site requires both the base domain *and* its sub-domains to load properly, you must type `y` to both prompts!
+> 3. If you say `y` to the wildcard, the tool saves it and moves on to the next completely new logged domain.
+> 4. If you say `n` to the wildcard, the tool moves one level deeper and asks about `c.d.com`, then `*.c.d.com`. If you say `n` again, it asks for `b.c.d.com` and `*.b.c.d.com`, and so on, until you approve a wildcard or reach the full domain.
 
-
-4. Click **Apply** to deploy the DNS server.
-
-> **Backup and restore:** Click **Export DNS Files** to save a snapshot of `whitelisted_domains.json`, `blacklisted_domains.json`, and `domain_access_log.json` to a folder of your choice. To restore from a backup, click **Upload JSON File** and select the file — it must be named *exactly* `whitelisted_domains.json`, `blacklisted_domains.json`, or `domain_access_log.json` for the upload to be routed to the correct destination automatically.
->
-> **Settings:** The DNS card exposes two configurable values — **Upstream DNS IP** (default `8.8.8.8`; change this if you prefer a different upstream resolver such as `1.1.1.1`) and **Threshold Days** (default `7`). Click **Save** after changing either value. Whitelisted domain names that appear in **red** in the whitelist panel are domains whose last-access timestamp (stored in `domain_access_log.json`) exceeds `Threshold Days` — these have not been visited recently and should be considered for deletion to keep the whitelist lean.
->
-> **Note:** It may be worth running steps 2-3 above occasionally as domain names and sub-domain names undergo updates.
+4. Click **Apply** to deploy the DNS server. 
 
 ### Step 12 — Hand Over the Password
-Give the administrator account password to the accountability partner. Setup is complete.
+Give the administrator account password to your accountability partner. Setup is complete.
 
 ---
 
-## Restrictions Reference (Additional Details)
-
----
+## Restrictions Reference
 
 ### 1. ACL File Restrictions
+**What it does:** Denies the restricted user the ability to execute powerful Windows system tools (e.g., `powershell.exe`, `curl.exe`, `nslookup.exe`).
 
-**What it does:** Denies the restricted user the ability to execute a configurable list of powerful Windows system tools — by default: `powershell.exe`, `powershell_ise.exe`, `bitsadmin.exe`, `certutil.exe`, `cscript.exe`, `curl.exe`, `nslookup.exe`, and `wsl.exe`. Attempting to run any of these from the restricted account results in an "access denied" error.
-
-**Why it's needed:** These tools are the most common bypass vectors. `curl.exe` and `nslookup.exe` can query DNS directly by IP address, bypassing the DNS server entirely. `powershell.exe` can execute arbitrary scripts, download files, and reconfigure network settings. `certutil.exe` and `bitsadmin.exe` are frequently abused as download utilities.
-
-**Why not just block the folders?** Several of these executables (especially `powershell.exe`) exist in multiple locations under `C:\Windows` — `System32`, `SysWOW64`, `WinSxS`, etc. A folder-level block is bypassed by finding a copy elsewhere. This restriction searches recursively and blocks every instance.
-
-> **You can add more executables to the list** in the Restriction Manager before clicking Apply. If you find other system tools that could be used to bypass the restrictions, add them here.
-
-**Does not affect** the administrator account. Does not block read access — only execution.
-
-**ACL backups** are saved to `C:\NTFS_ACL_Backups\` before any changes, enabling a clean one-click restore.
-
----
+**Why it's needed:** These tools are common bypass vectors. `curl.exe` and `nslookup.exe` can query DNS by IP address, bypassing the DNS server entirely. `powershell.exe` can execute scripts to reconfigure network settings. By applying recursive NTFS ACL Deny rules, the user cannot execute these files even if they find copies hidden elsewhere in the `C:\Windows` directory.
 
 ### 2. WDAC Application Control
+**What it does:** Deploys a Windows Defender Application Control policy in "Enforce" mode, blocking any executable not located in `C:\Program Files` or `C:\Program Files (x86)`.
 
-**What it does:** Deploys a Windows Defender Application Control (WDAC) policy in Enforce mode that blocks any executable not covered by the policy from running. By default, execution is allowed from `C:\Program Files\*`, `C:\Program Files (x86)\*`, and any additional paths you specify. When a blocked file tries to run, Windows displays a notification informing the user that the file is blocked by policy.
-
-**Why it's needed:** NTFS ACL restrictions alone can't prevent a user from downloading and running arbitrary executables. A user could download a VPN installer, a custom browser, or a DNS bypass tool to their Desktop and run it. WDAC operates at the kernel level and blocks execution regardless of where the file came from.
-
-**Why not AppLocker?** WDAC is enforced by the Windows kernel directly and is available on Windows 11 Home. AppLocker requires Pro/Enterprise.
-
-> ⚠️ **Critical — add your admin account path before applying:**
-> Any exe not in `C:\Program Files` or `C:\Program Files (x86)` will be blocked — including the Restriction Manager itself if it's running from somewhere like `C:\Users\YourAdminName\`. Before clicking Apply, add `C:\Users\<your admin account name>\*` to the "Allow Extra Paths" field.
->
-> **If you get locked out** (can't run the Restriction Manager or other exes after a reboot), navigate to `C:\Windows\System32\CodeIntegrity\CiPolicies\Active`, delete or move the file named **`{AE466EE3-68C3-20E7-A255-F6B84E1F225A}.cip`** (there will be several `.cip` files in that folder — this is the one created by the Restriction Manager), and restart. All exes will run normally again immediately.
-
-**WDAC is a machine-wide policy**. Any exe in the allowed paths can run without restriction. Script enforcement can optionally be disabled (the "Disable Script Enforcement" checkbox) to leave PowerShell unrestricted for the administrator.
-
-**Test before finalizing.** Programs installed outside `C:\Program Files` or `C:\Program Files (x86)` — typically any program installed "for this user only" — will stop working. Reinstall them using a system-level installer and choose "Install for all users" to place them in `C:\Program Files` or `C:\Program Files (x86)`.
-
----
+**Why it's needed:** Prevents the user from downloading and running arbitrary portable executables (like VPNs, custom browsers, or DNS bypass tools) directly from their Downloads or Desktop folders.
 
 ### 3. Block Windows Store
+**What it does:** Disables the `InstallService` Windows service and adds an outbound firewall block rule targeting the Store.
 
-**What it does:** Disables the `InstallService` Windows service and adds a firewall outbound block rule targeting the Store's package family name. The Microsoft Store becomes non-functional — it cannot connect to the internet or install applications.
-
-**Why it's needed:** The Store is a direct installation path for VPN apps, proxy clients, and alternative browsers that require no web download and no administrator credentials. Blocking it removes this vector.
-
-**Does not** uninstall already-installed Store applications or affect apps installed before this restriction was applied.
-
----
+**Why it's needed:** The Microsoft Store is a direct installation path for VPN apps and alternative browsers that require no administrator credentials. Blocking it seals this vector.
 
 ### 4. Disable DNS-over-HTTPS (DoH)
+**What it does:** Writes machine-level Registry policy keys that unconditionally disable DoH in Chrome and Edge.
 
-**What it does:** Writes machine-level Registry policy keys that unconditionally disable DNS-over-HTTPS in Chrome and Edge. Both browsers will display "Use secure DNS is managed by your organization" in settings — the option cannot be changed by the user.
-
-**Why it's needed:** DoH routes DNS queries over encrypted HTTPS to a remote resolver chosen by the user, completely bypassing the local DNS server. Without this restriction, the restricted user could enable DoH in browser settings in under a minute and immediately circumvent the entire DNS Suite. This must be applied for restriction #10 to work.
-
-**Only covers Chrome and Edge.** Any other browser with DoH capability must be removed or separately restricted.
-
-*Writes to `HKLM\SOFTWARE\Policies\Google\Chrome` and `HKLM\SOFTWARE\Policies\Microsoft\Edge`. No reboot required — takes effect on next browser launch.*
-
----
+**Why it's needed:** DoH encrypts DNS queries, completely bypassing local DNS servers. If left enabled, the user could bypass the entire DNS Suite by clicking a single toggle in their browser settings. 
 
 ### 5. Browser Extension Lockdown
+**What it does:** Uses a Registry policy to block all Chrome/Edge extensions by default, leaving only the explicitly allowed Extension IDs functional.
 
-**What it does:** Installs a wildcard extension block (`*`) for both Chrome and Edge via Registry policy, then writes an allowlist of specific extension IDs. Every extension not on the allowlist is disabled; no new extensions can be installed from any source.
-
-**Why it's needed:** A single browser extension can act as a VPN, proxy client, or DoH enabler — any of which bypasses the DNS restrictions. This restriction prevents new extensions from being installed at the policy level.
-
-> **Install all extensions you need *before* applying this.** Use the **Auto-detect** buttons to automatically populate the allowlist from whatever is currently installed — this ensures nothing the user already has gets unexpectedly blocked.
-
-Extensions disabled by this restriction show as "Blocked by administrator" in the browser. Their data is preserved if they're later added to the allowlist.
-
----
+**Why it's needed:** Browser extensions can act as VPNs, proxy clients, or DoH enablers. This prevents the user from installing unapproved extensions to circumvent network restrictions.
 
 ### 6. Windows Proxy Lock
+**What it does:** Forces the system proxy to "off" and applies a Registry Deny ACE that prevents the restricted user from modifying the proxy settings.
 
-**What it does:** Accesses the restricted user's registry hive, forces the system proxy to off, and applies a Deny ACE that prevents the restricted user from modifying the proxy registry key. The user can see their proxy settings in Windows Settings but cannot change them.
-
-**Why it's needed:** A proxy server routes traffic through an external address, bypassing the DNS server. This restriction removes that option at the registry level.
-
-The proxy is forced **off** before the lock is applied — the user will never be stuck with a proxy enabled. The GUI refuses to apply this restriction to any account in the local Administrators group.
-
----
+**Why it's needed:** A proxy server routes traffic through an external address, bypassing local DNS. This restriction hard-locks the proxy feature.
 
 ### 7. BrowserGuard Kernel Driver
+**What it does:** Installs a kernel-mode driver (`BrowserGuard.sys`) that returns "Access Denied" if Chrome or Edge is launched using command-line arguments.
 
-**What it does:** Installs `BrowserGuard.sys` as a kernel-mode driver that intercepts process creation events. When Chrome (`chrome.exe`) or Edge (`msedge.exe`) is launched with any command-line arguments, the driver returns **Access Denied** — the browser simply won't open if arguments are passed to it. Chrome and Edge launched normally (via shortcut, Start menu, or by clicking a file) work without issue.
-
-**Why it's needed:** Both browsers accept command-line arguments that can override security policies — for example, `--dns-servers=8.8.8.8` to bypass the DNS server, or `--proxy-server` to set a proxy. A kernel driver is the only reliable way to block this because user-mode approaches (NTFS permissions, Registry tricks) aren't comprehensive.
-
-> **About the desktop watermark:** BrowserGuard requires Windows test-signing mode, which puts a small watermark in the lower-right corner of the desktop (e.g. "Test Mode — Windows 11"). This is harmless and not permanent — clicking **Remove** in the BrowserGuard card and rebooting removes it completely.
-
-**WDAC interaction:** If a WDAC policy is deployed, the Restriction Manager automatically generates and deploys a supplemental WDAC policy that whitelists the driver's signing certificate, so the kernel driver isn't blocked by code integrity enforcement.
-
-Deployment also disables HVCI (Memory Integrity) via Registry, which is required for test-signed drivers to load. Both test-signing and HVCI are automatically restored when BrowserGuard is removed.
-
----
+**Why it's needed:** Browsers accept command-line flags (like `--dns-servers=8.8.8.8` or `--proxy-server`) that override internal security policies. A kernel driver is the only reliable way to block these flags system-wide.
 
 ### 8. Firewall Suite
+**What it does:** Deploys a Task Scheduler process that enforces a strict, time-based internet access schedule via Windows Firewall.
 
-**What it does:** Deploys two executables and a Task Scheduler task that controls internet access based on a time schedule:
-
-- **`firewall_scheduler.exe`** — runs on every boot and sleep-wake event. Creates a "Block All Internet" Windows Firewall rule and activates it, then enters a polling loop checking the timesheet. When the current time falls inside an approved window, the rule is disabled (internet allowed); otherwise it remains enabled (internet blocked).
-
-- **`timesheet_manager.exe`** — a desktop application for editing the schedule. A shortcut called **Timesheet Manager** is placed on the desktop for all users. It requires administrator elevation to run, so the restricted user cannot modify the schedule. Run this shortcut to configure the allowed access windows.
-
-**Timesheet format:**
-```
-Format:  M/D/YYYY HH(am/pm)-HH(am/pm)
-Example: 3/5/2026 10am-12pm   or   3/5/2026 2:30pm-4pm
-```
-
-**This component is optional** — see the [Q&A](#qa) for when to use it and the important warning about using it without the DNS Suite.
-
----
+**Why it's needed:** Allows an administrator to ensure the internet is only accessible during approved windows (e.g., when an accountability partner is physically present). Useful if the restricted user needs to access the open internet for a limited period of time (should be used without the DNS Suite active).
 
 ### 9. Adapter Guard
+**What it does:** A background task that fires instantly via Windows PnP events whenever a network adapter connects, disabling any adapter not explicitly whitelisted.
 
-**What it does:** Deploys `adapter_guard_oneshot.exe` and a Task Scheduler task that fires on boot and whenever any network adapter connects. It reads an allowlist of approved adapter names and disables any adapter not on the list.
-
-**Why it's needed, reason 1 — multiple adapters:** If the machine has both Wi-Fi and Ethernet, a user might switch to whichever adapter doesn't have the DNS restrictions configured. Adapter Guard ensures only approved adapters stay enabled.
-
-**Why it's needed, reason 2 — new hardware:** If the restricted user physically plugs in a USB Wi-Fi dongle or any other network adapter, Adapter Guard fires the moment the adapter connects (via the Windows Kernel PnP event system) and disables it before it can be used. It is literally impossible to add a new internet connection to bypass the DNS restrictions — the adapter is blocked before any traffic can flow through it.
-
-Note: The Firewall Suite's blanket block applies regardless of adapter, so even if a new adapter somehow slipped past Adapter Guard, the Firewall Suite's rule would still prevent internet access during blocked hours. But the Firewall Suite does not provide content filtering — the DNS Suite does. The Adapter Guard exists specifically to protect the DNS restrictions from adapter-switching bypasses.
-
-The allowlist is managed entirely through the Restriction Manager GUI — no file editing required.
-
----
+**Why it's needed:** Prevents the user from plugging in a USB Wi-Fi dongle or secondary Ethernet cable to bypass the configured DNS restrictions on the primary network adapter.
 
 ### 10. DNS Suite
+**What it does:** Installs a custom, local DNS server (binding to `0.0.0.0:53`) that cross-references all web traffic against a strict Whitelist and Blacklist.
 
-**This is the most important restriction in the entire project.** Everything else exists to protect it or close gaps around it.
-
-**What it does at a high level:** Installs a custom DNS server that intercepts every domain lookup on the machine. Before any website can be loaded, the browser asks this server "where does this website live?" The server checks the request against two lists:
-
-- **Whitelist** — domains the restricted user is allowed to visit. Approved lookups are forwarded to an upstream resolver and the result is returned normally.
-- **Blacklist** — domains that are always refused, even if they'd otherwise be covered by the whitelist. Used for blocking specific subdomains of otherwise-allowed sites.
-
-If a domain is on neither list, the server returns NXDOMAIN — the browser cannot connect to the site at all. **Everything is blocked by default unless explicitly approved.**
-
-**Why a whitelist instead of a blacklist?** See the [Q&A](#qa) section for the full explanation. In short: a blacklist can never be complete; a whitelist blocks everything by default and only opens what you've explicitly approved.
-
-**The whitelist + blacklist combination** is what makes this practical day-to-day — the whitelist provides the broad "only approved sites" policy, while the blacklist provides fine-grained overrides for blocking specific subdomains of otherwise-allowed sites (e.g. blocking `drive.google.com` while keeping `accounts.google.com` available). It's worth noting that the blacklist is **NOT** mandatory for the **DNS Suite** to function properly, but the whitelist **is** mandatory to use the internet.
-
-**Three executables are deployed:**
-
-- **`dns_whitelist_blacklist_server.exe`** — the DNS server itself. Binds to `0.0.0.0:53`. Queries matching the blacklist → NXDOMAIN. Queries matching the whitelist → forwarded to upstream resolver (default: `8.8.8.8`, configurable in the GUI). All other queries → NXDOMAIN. Also logs the last-access timestamp for each whitelisted domain to `domain_access_log.json`.
-
-- **`dns_whitelist_logger.exe`** — a capture-only DNS server with no filtering. Run this while the restricted user (or the administrator acting on their behalf) browses the sites they need. Every queried domain is recorded to `new_whitelisted_domains.json`. Close the window when done.
-
-- **`merge_whitelists.exe`** — walks through every domain in `new_whitelisted_domains.json` not already in `whitelisted_domains.json` and prompts the administrator to approve or skip it. Supports wildcard entries and deduplicates automatically.
-
-**Stale domain tracking:** The Restriction Manager displays the whitelist with any domain not accessed within a configurable number of days highlighted in red with a day-count. This helps keep the whitelist lean over time.
-
-> **All network adapters must be DNS-Capable.** Move every adapter from the DNS-Incapable box to the DNS-Capable box. Any adapter left in DNS-Incapable bypasses the DNS server entirely. IPv6 is automatically disabled on each adapter when moved to DNS-Capable — this prevents a glitch where Windows sometimes randomly resets IPv6-based changes to adapters.
-
-> **Run the DNS Logger first, then Merge Whitelists, then start using the server.** The DNS server blocks everything by default. If you start it before populating the whitelist, **no website will resolve at all until you populate and apply the whitelist.**
+**Why it's needed:** This enforces the core content restriction. It utilizes a default-deny (whitelist) approach because blacklists can never be complete. If a domain isn't explicitly approved on the whitelist, the server returns an `NXDOMAIN` error, completely blocking access.
 
 ---
 
 ## How the Restrictions Reinforce Each Other
 
-No single restriction here is unbreakable in isolation. They are designed to be deployed together:
+No single restriction here is unbreakable in isolation. They are designed to be deployed together as a web:
 
-| Bypass attempt | Blocked by |
+| Bypass Attempt | Blocked By |
 |---|---|
-| Download and run a VPN installer | WDAC (#2) blocks exe; Store block (#3) prevents Store installs |
-| Install a VPN/proxy extension in Chrome or Edge | Extension Lockdown (#5) |
-| Enable DoH in the browser to bypass DNS | DoH disable (#4) removes this from the browser UI |
-| Launch Chrome with `--dns-servers` argument | BrowserGuard (#7) returns Access Denied when any arguments are passed |
-| Use `curl.exe` or `nslookup.exe` for direct IP queries | ACL restrictions (#1) deny execution |
-| Run PowerShell to reconfigure DNS or network | ACL restrictions (#1) deny execution of `powershell.exe` |
-| Enable a proxy server to bypass DNS | Proxy Lock (#6) denies all writes to the proxy registry key |
-| Switch to a different network adapter | Adapter Guard (#9) disables all non-approved adapters |
-| Plug in a USB Wi-Fi dongle or Ethernet adapter | Adapter Guard (#9) fires on the PnP connect event and disables it immediately |
-| Access any unapproved website | DNS Suite (#10) refuses to resolve any domain not on the whitelist |
-| Access the internet outside approved hours | Firewall Suite (#8) blocks all traffic outside configured time windows |
+| Download and run a VPN installer | **WDAC (#2)** blocks the executable; **Store block (#3)** prevents Store installs |
+| Install a VPN/proxy browser extension | **Extension Lockdown (#5)** |
+| Enable DoH in the browser settings | **DoH disable (#4)** locks the browser UI |
+| Launch Chrome with `--dns-servers` | **BrowserGuard (#7)** returns Access Denied |
+| Use `curl.exe` or `nslookup.exe` | **ACL restrictions (#1)** deny execution |
+| Run PowerShell to reconfigure network | **ACL restrictions (#1)** block `powershell.exe` |
+| Enable a proxy server in Windows | **Proxy Lock (#6)** locks the registry key |
+| Switch to a different network adapter | **Adapter Guard (#9)** disables unapproved adapters |
+| Plug in a USB Wi-Fi dongle | **Adapter Guard (#9)** disables it immediately upon connection |
+| Access an unapproved website | **DNS Suite (#10)** refuses to resolve un-whitelisted domains |
+| Access the internet late at night | **Firewall Suite (#8)** blocks traffic outside scheduled hours |
 
 ---
 
 ## Q&A
 
 ### Do I need the Firewall Suite?
+**The Firewall Suite is optional.** It controls *when* internet is available, not *what* content is accessible. Use it if you want to cut off internet access outside of specific hours. 
 
-**The Firewall Suite is optional.** It controls *when* internet is available, not *what* content is accessible.
-
-Use it if you want to completely cut off internet access outside of specific hours — for example, a shared family computer where internet is allowed from 4pm–9pm on weekdays.
-
-**Critical warning:** If you deploy the Firewall Suite without the DNS Suite, during every internet window the user has fully unrestricted internet access — every other restriction in this project can be worked around if you have unrestricted internet and enough time. **There is no possible way to have an internet access window where the restrictions cannot be bypassed unless the DNS Suite is also deployed.** The Firewall Suite is designed for situations where the user is trusted during the allowed window (ex: when an accountability partner is physically present).
-
-If content filtering is your goal, the DNS Suite is non-negotiable. The Firewall Suite is an add-on for time control, not a content filter.
+**Critical warning:** If you deploy the Firewall Suite *without* the DNS Suite, the user will have fully unrestricted internet access during their allowed windows. The Firewall Suite is not a content filter.
 
 ### Why not just use CleanBrowsing, NextDNS, or Cloudflare Family?
-
-All of those services operate on blacklists. The fundamental problem with any blacklist is that it can never be complete — the internet adds new domains constantly, content moves between domains, and a motivated person will eventually find something that wasn't catalogued. Even the best commercial filters with dedicated teams maintaining them will miss things. You cannot prove a blacklist blocks *everything*, and one missed domain is all it takes.
-
-A whitelist-based DNS server doesn't have this problem because it starts from "everything is blocked" and only opens what you've explicitly approved. If a new domain appears tomorrow that has never been seen before, it is blocked by default — no one has to add it to any list.
+Those services operate on blacklists. The fundamental problem with a blacklist is that it can never be complete. The internet adds new domains constantly, and a motivated person will eventually find something that wasn't catalogued. A whitelist-based DNS server starts from "everything is blocked" and only opens what you explicitly approve. 
 
 ### What about Firefox, Brave, or other browsers?
-
-**Remove them.** The DoH restriction, BrowserGuard, and Extension Lockdown only cover Chrome and Edge. Any other browser is a complete bypass vector for the DNS and proxy restrictions. Perhaps future updates will include support for additional browsers.
-
+**Remove them.** The DoH restriction, BrowserGuard, and Extension Lockdown are specifically coded to lock down Chrome and Edge. Any other browser is a bypass vector. Support for additional browsers may be included in future updates.
 
 ---
 
 ## Architecture & Build Guide
 
-This assumes you want to compile the `restriction_manager.exe` file for yourself. If you just want to download and run the restrictions, then you can launch the pre-compiled `restriction_manager.exe` file I compiled by clicking the `Code` button (if you're viewing this from GitHub) and then clicking `Download ZIP` and locating and running the executable from there.
+*Note: If you just want to use the software, download the pre-compiled `restriction_manager.exe` from the Releases page or by clicking `Code -> Download ZIP` on GitHub. If you'd rather compile the software yourself, continue reading.*
 
 ### How it works
+The Restriction Manager is a single compiled `.exe` that bundles all dependencies internally. Auxiliary tools are compiled separately with PyInstaller into `--onedir` folders, zipped into `.dat` payload files, and embedded into the main executable. At runtime, the manager extracts the payloads, registers Task Scheduler tasks, and configures the OS automatically.
 
-The Restriction Manager is a single compiled `.exe` that bundles all dependencies internally. Each auxiliary tool (DNS server, firewall scheduler, etc.) is compiled separately with PyInstaller into a `--onedir` folder, zipped into a `.dat` payload file, and embedded in the main exe via `--add-data`. At runtime, clicking an Apply button extracts the relevant payload to the correct system directory, registers Task Scheduler tasks, and creates shortcuts — no Python or manual file placement required on the target machine.
-
-```
+```text
 restriction_manager.exe
-├── FIREWALL_SUITE.dat    ← firewall_scheduler.exe + timesheet_manager.exe (merged onedir)
-├── DNS_SUITE.dat         ← dns_server.exe + dns_logger.exe + merge_whitelists.exe (merged onedir)
-├── ADAPTER_GUARD.dat     ← adapter_guard_oneshot.exe (onedir)
+├── FIREWALL_SUITE.dat    ← firewall_scheduler.exe + timesheet_manager.exe
+├── DNS_SUITE.dat         ← dns_server.exe + dns_logger.exe + merge_whitelists.exe
+├── ADAPTER_GUARD.dat     ← adapter_guard_oneshot.exe
 └── BROWSERGUARD_SYS.dat  ← BrowserGuard.sys (kernel driver binary)
 ```
 
 ### Build prerequisites *(dev machine only)*
 
-Python 3.10+ (I used Python 3.11.3), PyInstaller, and `dnslib`:
-```
+Python 3.10+ (I used Python 3.11.3), `PyInstaller`, and `dnslib`:
+```bash
 pip install --upgrade pyinstaller dnslib
 ```
 or
-```
+```bash
 pip install -r requirements.txt
 ```
 
 ### Compile the restriction_manager.py script into an exe file
 
 Run
-```
+```bash
 python main.py
 ```
-and after a few minutes, you'll see `restriction_manager.exe` fully compiled
+and after a few minutes, you'll see `restriction_manager.exe` fully compiled.
+
+## License
+
+This project is licensed under the CC BY-NC-SA 4.0 License. See the LICENSE file for details.
+
+## Support
+
+This software is free and open source. If it has been useful to you and you'd like to support future development, you can sponsor me on GitHub:
+
+❤️ [Sponsor this project](https://github.com/sponsors/bishopsscope)
+
+Thank you to everyone who contributes, reports bugs, submits pull requests, or shares the project with others.
