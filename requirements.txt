@@ -4,4 +4,6 @@ packaging==26.2
 pefile==2024.8.26
 pyinstaller==6.20.0
 pyinstaller-hooks-contrib==2026.5
+pywin32==311
 pywin32-ctypes==0.2.3
+WMI==1.5.1
